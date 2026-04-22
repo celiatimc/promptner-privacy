@@ -29,73 +29,87 @@
     a:hover { text-decoration: underline; }
     hr { border: none; border-top: 1px solid #e5e5e5; margin: 32px 0; }
     @media (prefers-color-scheme: dark) { hr { border-color: #333; } }
+    code { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 0.85em; padding: 1px 5px; border-radius: 3px; background: rgba(127, 127, 127, 0.12); }
   </style>
 </head>
 <body>
 
 <h1>Promptner — 隐私政策</h1>
-<p class="meta">最后更新：2026 年 4 月 14 日</p>
+<p class="meta">最后更新：2026 年 4 月 22 日</p>
 
-<p>Promptner 是一款 Chrome 浏览器扩展程序，用于管理 AI 提示词。我们非常重视您的隐私，本政策说明我们如何收集、使用和保护您的数据。</p>
+<p>Promptner 是一款 Chrome 浏览器扩展程序，用于管理 AI 提示词（含文本与图片两类内容）。我们非常重视您的隐私，本政策说明我们如何收集、使用和保护您的数据。</p>
 
 <h2>1. 数据收集</h2>
 <p>Promptner 收集并存储以下数据，<strong>全部保存在您的本地设备上</strong>（通过 <code>chrome.storage.local</code>）：</p>
 <ul>
-  <li>您创建的提示词内容（标题、正文、分类、标签等）</li>
-  <li>扩展设置（主题偏好、快捷键配置、站点规则等）</li>
-  <li>回收站中暂存的已删除提示词</li>
-  <li>云同步状态信息（同步模式、上次同步时间等）</li>
+  <li><strong>文本提示词</strong>：您创建的提示词内容（标题、正文、分类、标签、收藏 / 归档状态等）</li>
+  <li><strong>图片提示词</strong>（v1.2.3 起支持）：您自行上传或粘贴的图片（每条提示词最多 3 张）· 客户端压缩为 WebP 格式后本地存储 · 原图字节与缩略图字节均不出设备</li>
+  <li><strong>草稿箱</strong>：您在草稿箱内暂存的长文本编辑内容</li>
+  <li><strong>回收站</strong>：已删除的提示词 / 图片的软删除暂存，彻底删除后即物理移除</li>
+  <li><strong>存档历史</strong>（v1.0.0 起）：您主动点击【存档】后生成的数据快照（文本 / 图片各自独立 3 位 LRU 环形存档）</li>
+  <li><strong>扩展设置</strong>：主题偏好、快捷键配置、站点规则等</li>
+  <li><strong>云同步状态信息</strong>（仅启用云同步时）：同步模式、上次同步时间等</li>
 </ul>
 
-<h2>2. Google Drive 云同步</h2>
-<p>当您启用「云同步」功能时，Promptner 将通过 Google OAuth2 认证获取您的 Google 账号授权，并使用 <strong>Google Drive API</strong> 将您的提示词数据上传到 Google Drive 的 <strong>应用私有数据文件夹</strong>（<code>appDataFolder</code>）。</p>
+<h2>2. Google Drive 云同步（可选功能）</h2>
+<p>当您启用「云同步」功能时，Promptner 将通过 Google OAuth2 认证获取您的 Google 账号授权，并使用 <strong>Google Drive API</strong> 将您的<strong>文本提示词数据</strong>上传到 Google Drive 的 <strong>应用私有数据文件夹</strong>（<code>appDataFolder</code>）。</p>
 <ul>
-  <li><strong>访问范围</strong>：仅访问 Promptner 自身创建的文件（<code>drive.appdata</code> scope），不会访问您 Google Drive 中的任何其他文件</li>
-  <li><strong>存储内容</strong>：您的提示词数据（标题、内容、分类、收藏/归档状态等）以 JSON 格式存储</li>
+  <li><strong>访问范围</strong>：仅访问 Promptner 自身创建的文件（<code>drive.appdata</code> scope）· 不会访问您 Google Drive 中的任何其他文件</li>
+  <li><strong>同步内容</strong>：文本提示词数据（标题、内容、分类、收藏 / 归档状态等）以 JSON 格式存储</li>
+  <li><strong>不同步的内容</strong>：<strong>图片原图 / 图片提示词 / 存档历史 / 草稿箱内容</strong>均<strong>不上传</strong>至云端 · 仅保留在您的本地设备</li>
   <li><strong>您的控制权</strong>：您可以随时在扩展设置中关闭云同步、登出 Google 账号，或从 <a href="https://myaccount.google.com/permissions" target="_blank">Google 账号设置</a> 撤销 Promptner 的访问权限</li>
+  <li><strong>可选性</strong>：云同步完全可选 · 不登录不影响扩展任何其他功能的使用</li>
 </ul>
 
 <h2>3. 数据传输</h2>
 <ul>
   <li>所有与 Google 服务的通信均通过 <strong>HTTPS 加密连接</strong></li>
-  <li>OAuth2 token 由 Chrome 浏览器内置的身份认证系统管理，Promptner 不存储您的 Google 密码</li>
-  <li>除 Google Drive 云同步外，Promptner <strong>不会向任何第三方服务器发送您的数据</strong></li>
+  <li>OAuth2 token 由 Chrome 浏览器内置的身份认证系统管理 · Promptner 不存储您的 Google 密码</li>
+  <li>除 Google Drive 云同步外 · Promptner <strong>不会向任何第三方服务器发送您的数据</strong></li>
+  <li>图片数据<strong>不参与任何网络传输</strong> · 仅在您本地设备的 Chrome 存储中读写</li>
 </ul>
 
 <h2>4. 数据共享</h2>
 <p>我们 <strong>不会</strong> 出售、出租或以其他方式与第三方共享您的个人数据。您的提示词数据仅存储在：</p>
 <ul>
   <li>您的本地浏览器存储中</li>
-  <li>您自己的 Google Drive 账号中（仅在启用云同步时）</li>
+  <li>您自己的 Google Drive 账号中（仅文本部分 · 仅在启用云同步时）</li>
 </ul>
 
 <h2>5. 权限说明</h2>
-<p>Promptner 请求以下浏览器权限：</p>
+<p>Promptner 请求以下浏览器权限 · 每项权限用于特定功能：</p>
 <ul>
-  <li><strong>storage</strong>：在本地存储提示词和设置数据</li>
-  <li><strong>tabs</strong>：检测当前页面以匹配站点规则</li>
-  <li><strong>scripting</strong>：在匹配的 AI 站点注入悬浮工作台</li>
-  <li><strong>identity</strong>：Google 账号认证（云同步功能）</li>
-  <li><strong>alarms</strong>：自动同步定时器</li>
-  <li><strong>host_permissions</strong>：在特定 AI 网站（ChatGPT、Claude、Gemini 等）上显示悬浮入口</li>
+  <li><strong>storage</strong>：在本地存储提示词、图片、设置、草稿箱、回收站、存档历史等数据</li>
+  <li><strong>unlimitedStorage</strong>（v1.2.3 起）：图片提示词的原图与附加图以独立键值存储 · 为支持用户自由管理图片数量（单张最大 10 MB · 总量按设备磁盘空间为限） · 需申请无限存储配额 · 全部数据仍保留在本地 · 不涉及任何外部网络传输或上传</li>
+  <li><strong>tabs</strong>：读取当前标签页 URL 以匹配站点规则 · 或在用户点击"添加当前网站"时获取 URL 模板 · <strong>不读取页面内容</strong>、不读取浏览历史</li>
+  <li><strong>scripting</strong>：在匹配的 AI 站点动态注入悬浮工作台 UI（Shadow DOM 隔离） · <strong>不访问页面 DOM</strong>、不读取对话内容</li>
+  <li><strong>identity</strong>：仅当您主动启用云同步时触发 · 使用 Chrome Identity API + Google OAuth2 获取 token · 不启用则完全不触发</li>
+  <li><strong>alarms</strong>：云同步定时器（每 30 分钟）+ 数据变更 30 秒防抖调度 · 不用于其他目的</li>
+  <li><strong>host_permissions</strong>（5 个 AI 域名）：<code>chatgpt.com</code> / <code>chat.openai.com</code> / <code>claude.ai</code> / <code>gemini.google.com</code> / <code>www.perplexity.ai</code> · 仅用于注入悬浮工作台 · Shadow DOM 运行 · 不读对话、不上传</li>
+  <li><strong>optional_host_permissions</strong>：<code>http://*/*</code> 和 <code>https://*/*</code> · 仅当您手动添加自定义站点且原生授权弹窗点"允许"时按站点逐一授予 · 从不一次性请求所有网站</li>
 </ul>
 
-<h2>6. 数据删除</h2>
+<h2>6. 远程代码</h2>
+<p>Promptner 扩展<strong>不加载任何远程代码</strong>（no <code>eval</code> / no external scripts / no remote modules） · 所有 JavaScript / CSS / 字体 / 图标均随扩展包分发。与 Google Drive API 的交互仅限数据交换 · 不涉及代码执行。</p>
+
+<h2>7. 数据删除</h2>
 <p>您可以随时通过以下方式删除数据：</p>
 <ul>
-  <li>在扩展工作台中删除提示词（移至回收站后永久删除）</li>
-  <li>卸载扩展程序（将清除所有本地数据）</li>
-  <li>从 Google Drive 中删除 Promptner 的应用数据（设置 → 管理应用 → Promptner → 删除隐藏的应用数据）</li>
+  <li>在扩展工作台中删除单条提示词（移至回收站，可一键还原；彻底删除则物理移除）</li>
+  <li>清空回收站（可选二次确认 · 不可撤销）</li>
+  <li>在存档历史面板中删除指定版本的本地存档（文本 / 图片各自独立）</li>
+  <li>卸载扩展程序（将清除所有本地数据 · 包括图片原图）</li>
+  <li>从 Google Drive 中删除 Promptner 的应用数据：Google Drive 网页端 → ⚙ 设置 → 管理应用 → Promptner → 删除隐藏的应用数据</li>
 </ul>
 
-<h2>7. 儿童隐私</h2>
-<p>Promptner 不面向 13 岁以下的儿童，我们不会有意收集儿童的个人信息。</p>
+<h2>8. 儿童隐私</h2>
+<p>Promptner 不面向 13 岁以下的儿童 · 我们不会有意收集儿童的个人信息。</p>
 
-<h2>8. 政策变更</h2>
-<p>如本隐私政策发生变更，我们将在此页面更新内容并修改「最后更新」日期。重大变更将通过扩展更新日志通知用户。</p>
+<h2>9. 政策变更</h2>
+<p>如本隐私政策发生变更 · 我们将在此页面更新内容并修改「最后更新」日期。重大变更（如新增数据类型或涉及传输的权限）将通过扩展更新日志明确通知用户。</p>
 
-<h2>9. 联系方式</h2>
-<p>如对本隐私政策有任何疑问，请通过 Chrome Web Store 扩展页面的支持渠道联系我们。</p>
+<h2>10. 联系方式</h2>
+<p>如对本隐私政策有任何疑问 · 请通过 Chrome Web Store 扩展页面的支持渠道联系我们。</p>
 
 <hr>
 <p style="font-size: 0.85rem; color: #888;">© 2026 Promptner. All rights reserved.</p>
