@@ -35,7 +35,7 @@
 <body>
 
 <h1>Promptner — 隐私政策</h1>
-<p class="meta">最后更新：2026 年 4 月 22 日</p>
+<p class="meta">最后更新：2026 年 4 月 26 日（v1.9.0 · 云同步范围扩展）</p>
 
 <p>Promptner 是一款 Chrome 浏览器扩展程序，用于管理 AI 提示词（含文本与图片两类内容）。我们非常重视您的隐私，本政策说明我们如何收集、使用和保护您的数据。</p>
 
@@ -45,19 +45,41 @@
   <li><strong>文本提示词</strong>：您创建的提示词内容（标题、正文、分类、标签、收藏 / 归档状态等）</li>
   <li><strong>图片提示词</strong>（v1.2.3 起支持）：您自行上传或粘贴的图片（每条提示词最多 3 张）· 客户端压缩为 WebP 格式后本地存储 · 原图字节与缩略图字节均不出设备</li>
   <li><strong>草稿箱</strong>：您在草稿箱内暂存的长文本编辑内容</li>
-  <li><strong>回收站</strong>：已删除的提示词 / 图片的软删除暂存，彻底删除后即物理移除</li>
-  <li><strong>存档历史</strong>（v1.0.0 起）：您主动点击【存档】后生成的数据快照（文本 / 图片各自独立 3 位 LRU 环形存档）</li>
+  <li><strong>归档</strong>（v1.5.0 起由归档替代回收站）：被归档的提示词 / 图片软保护存储，可在【归档】视图取消归档；选择【彻底删除】时物理移除</li>
+  <li><strong>本地存档</strong>（v1.0.0 起 · v1.4.0 简化为单份）：您主动点击【存档】后生成的数据快照（文本 / 图片各自独立一份 · 每次存档覆盖上一次）</li>
   <li><strong>扩展设置</strong>：主题偏好、快捷键配置、站点规则等</li>
   <li><strong>云同步状态信息</strong>（仅启用云同步时）：同步模式、上次同步时间等</li>
 </ul>
 
-<h2>2. Google Drive 云同步（可选功能）</h2>
-<p>当您启用「云同步」功能时，Promptner 将通过 Google OAuth2 认证获取您的 Google 账号授权，并使用 <strong>Google Drive API</strong> 将您的<strong>文本提示词数据</strong>上传到 Google Drive 的 <strong>应用私有数据文件夹</strong>（<code>appDataFolder</code>）。</p>
+<h2>2. Google Drive 云同步（可选功能 · v1.9.0 起范围扩展）</h2>
+<p>当您启用「云同步」功能时，Promptner 将通过 Google OAuth2 认证获取您的 Google 账号授权，并使用 <strong>Google Drive API</strong> 将您的扩展数据上传到 Google Drive 的 <strong>应用私有数据文件夹</strong>（<code>appDataFolder</code>） · 该文件夹仅当前扩展可读写 · 您在 Google Drive 网页端不会看到这些文件 · 但仍占用您 Google Drive 配额。</p>
 <ul>
-  <li><strong>访问范围</strong>：仅访问 Promptner 自身创建的文件（<code>drive.appdata</code> scope）· 不会访问您 Google Drive 中的任何其他文件</li>
-  <li><strong>同步内容</strong>：文本提示词数据（标题、内容、分类、收藏 / 归档状态等）以 JSON 格式存储</li>
-  <li><strong>不同步的内容</strong>：<strong>图片原图 / 图片提示词 / 存档历史 / 草稿箱内容</strong>均<strong>不上传</strong>至云端 · 仅保留在您的本地设备</li>
-  <li><strong>您的控制权</strong>：您可以随时在扩展设置中关闭云同步、登出 Google 账号，或从 <a href="https://myaccount.google.com/permissions" target="_blank">Google 账号设置</a> 撤销 Promptner 的访问权限</li>
+  <li><strong>访问范围</strong>：仅访问 Promptner 自身创建的文件（<code>drive.appdata</code> scope · 与 v1 起一致 · 未升级）· 不会访问您 Google Drive 中的任何其他文件</li>
+  <li><strong>v1.9.0 起会同步上传的内容</strong>：
+    <ul style="margin-top: 6px;">
+      <li>文本提示词（标题 / 内容 / 分类 / 收藏 / 归档状态等 · v1 起即在云同步范围内）</li>
+      <li><strong>视觉提示词元数据 + 缩略图</strong>（v1.9.0 新增 · 标题 / 模型名 / 标签 / 缩略图等元数据）</li>
+      <li><strong>视觉提示词原图</strong>（v1.9.0 新增 · 客户端压缩后的 WebP 字节流 · 单张 ≤10MB · 通过 SHA-256 内容寻址 · 同图不重复上传）</li>
+      <li><strong>本地存档最新槽</strong>（v1.9.0 新增 · 文本 + 视觉各 1 份最新存档 · 历史 2 份不上传以节省带宽）</li>
+      <li><strong>草稿箱内容</strong>（v1.9.0 新增 · 单文档 · 后写者胜合并）</li>
+    </ul>
+  </li>
+  <li><strong>仍不同步的内容</strong>：扩展设置（主题 / 快捷键 / 站点规则） · 历史存档（除最新槽外的 2 份） · 浏览器内置同步状态 · 您 Google 账号的任何其他数据</li>
+  <li><strong>触发方式</strong>：
+    <ul style="margin-top: 6px;">
+      <li>文本与草稿：<strong>自动后台同步</strong>（30 秒延迟去抖 + 30 分钟周期性 alarm · 与 v1 一致）</li>
+      <li>图片原图与本地存档：<strong>仅手动触发</strong>（您在扩展设置面板点【全量同步】按钮 · 起飞前显示数据量 / 预计耗时 / 网络状况确认对话框 · 默认开启「仅 WiFi / 4G / 5G」可在 2G/3G 弱网下阻断同步避免耗流量）</li>
+    </ul>
+  </li>
+  <li><strong>合并策略</strong>：所有数据采用「后写者胜」（Last-Write-Wins · 按 <code>updatedAt</code> 时间戳）合并 · 多设备并发编辑同一对象时 · 时间戳较晚的版本胜出</li>
+  <li><strong>您的控制权</strong>：
+    <ul style="margin-top: 6px;">
+      <li>随时在扩展设置中关闭云同步、登出 Google 账号</li>
+      <li>从 <a href="https://myaccount.google.com/permissions" target="_blank">Google 账号设置</a> 撤销 Promptner 的访问权限</li>
+      <li>删除云端数据：Google Drive 网页端 → ⚙ 设置 → 管理应用 → Promptner → 删除隐藏的应用数据（一次性清除全部 appData 私有文件夹内容）</li>
+      <li>同步过程中可随时点【暂停】/【取消】按钮中止 · 不会损坏本地数据</li>
+    </ul>
+  </li>
   <li><strong>可选性</strong>：云同步完全可选 · 不登录不影响扩展任何其他功能的使用</li>
 </ul>
 
@@ -66,7 +88,8 @@
   <li>所有与 Google 服务的通信均通过 <strong>HTTPS 加密连接</strong></li>
   <li>OAuth2 token 由 Chrome 浏览器内置的身份认证系统管理 · Promptner 不存储您的 Google 密码</li>
   <li>除 Google Drive 云同步外 · Promptner <strong>不会向任何第三方服务器发送您的数据</strong></li>
-  <li>图片数据<strong>不参与任何网络传输</strong> · 仅在您本地设备的 Chrome 存储中读写</li>
+  <li>v1.8.x 及更早版本：图片数据<strong>不参与任何网络传输</strong> · 仅在您本地设备的 Chrome 存储中读写</li>
+  <li>v1.9.0 起（仅启用云同步且您主动点击【全量同步】时）：图片数据通过 HTTPS 上传至您 Google Drive 私有数据文件夹（<code>appDataFolder</code>） · 不经任何第三方中转</li>
 </ul>
 
 <h2>4. 数据共享</h2>
@@ -79,7 +102,7 @@
 <h2>5. 权限说明</h2>
 <p>Promptner 请求以下浏览器权限 · 每项权限用于特定功能：</p>
 <ul>
-  <li><strong>storage</strong>：在本地存储提示词、图片、设置、草稿箱、回收站、存档历史等数据</li>
+  <li><strong>storage</strong>：在本地存储提示词、图片、设置、草稿箱、本地存档等数据</li>
   <li><strong>unlimitedStorage</strong>（v1.2.3 起）：图片提示词的原图与附加图以独立键值存储 · 为支持用户自由管理图片数量（单张最大 10 MB · 总量按设备磁盘空间为限） · 需申请无限存储配额 · 全部数据仍保留在本地 · 不涉及任何外部网络传输或上传</li>
   <li><strong>tabs</strong>：读取当前标签页 URL 以匹配站点规则 · 或在用户点击"添加当前网站"时获取 URL 模板 · <strong>不读取页面内容</strong>、不读取浏览历史</li>
   <li><strong>scripting</strong>：在匹配的 AI 站点动态注入悬浮工作台 UI（Shadow DOM 隔离） · <strong>不访问页面 DOM</strong>、不读取对话内容</li>
@@ -95,11 +118,10 @@
 <h2>7. 数据删除</h2>
 <p>您可以随时通过以下方式删除数据：</p>
 <ul>
-  <li>在扩展工作台中删除单条提示词（移至回收站，可一键还原；彻底删除则物理移除）</li>
-  <li>清空回收站（可选二次确认 · 不可撤销）</li>
-  <li>在存档历史面板中删除指定版本的本地存档（文本 / 图片各自独立）</li>
+  <li>在扩展工作台中归档单条提示词（可在【归档】视图取消归档；选择【彻底删除】则物理移除 · 双重二次确认防误操作）</li>
+  <li>再次点击【存档】即覆盖上一份存档（文本 / 图片各自独立一份）</li>
   <li>卸载扩展程序（将清除所有本地数据 · 包括图片原图）</li>
-  <li>从 Google Drive 中删除 Promptner 的应用数据：Google Drive 网页端 → ⚙ 设置 → 管理应用 → Promptner → 删除隐藏的应用数据</li>
+  <li><strong>云端数据删除</strong>：Google Drive 网页端 → ⚙ 设置 → 管理应用 → Promptner → 删除隐藏的应用数据（一次性清除全部 appData 私有文件夹内容 · 包括 v1.9.0 上传的图片原图 / 视觉元数据 / 本地存档 / 草稿箱）</li>
 </ul>
 
 <h2>8. 儿童隐私</h2>
